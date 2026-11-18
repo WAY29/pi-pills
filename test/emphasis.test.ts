@@ -97,10 +97,12 @@ describe("reply guidance", () => {
 		const known = new Set([...Object.values(VOCABULARY).flatMap((w) => w.core), ...CONTEXT_WORDS, "Word"]);
 		for (const [, label] of text.matchAll(/\[\[([^\]]+)\]\]/g)) expect([...known].some((k) => label === k || label.startsWith(`${k} `) || label.startsWith(`${k}:`))).toBe(true);
 	});
-	test("every lead-in it lists gets an icon", () => {
-		for (const word of ["Check", "Do", "Next", "Unblock", "Left", "Run", "Guard", "Undo", "See"]) {
-			expect(text).toContain(`**${word}:**`);
-			expect(plain(`x **${word}:** y`)).not.toBe(`x **<mdLink>${word}:</>** y`);
+	test("legacy words keep their tones without taking prompt space", () => {
+		for (const [tone, words] of Object.entries(VOCABULARY)) {
+			for (const word of words.also) {
+				expect(text).not.toContain(`[[${word}]]`);
+				expect(toneOf(word)).toBe(tone as never);
+			}
 		}
 	});
 	test("addresses any user", () => expect(text).not.toMatch(/\bJohn\b|~\/dev/));

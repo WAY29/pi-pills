@@ -78,18 +78,20 @@ pi
 
 An agent writes pills only when it is told how. In Pi's terminal interface the extension adds a `reply_style` section to the system prompt on every run, so there is nothing to paste into an `AGENTS.md`. The section tells the agent:
 
-- which words to use for each color, and that every failure, ask and unchecked claim needs its pill
-- to open a reply with the kind of work it understood, and to mark consequences and ownership
-- to follow each attention pill with the action it calls for, such as the fastest check after `[[Unverified]]`
-- to write labels as plain words, because the extension adds the icons
+- which core pills to use for failures, attention, results, consequences, ownership and indirect evidence
+- to open substantive replies with a work pill and use bold labels and key terms sparingly
+- to run available checks, explain failures and attention pills with a cause and next action, and disclose consequences before acting
+- to let the extension add icons and keep copyable text and exact formats clean
 
-The word lists in that section are read from the same tables that color the pills, so the rules and the drawing cannot drift apart. It adds about 1,500 tokens to the prompt. Print, JSON and RPC runs do not get the section, since nothing there draws pills.
+The word lists in that section are read from the same tables that color the pills, so the rules and the drawing cannot drift apart. The section stays under 200 tokens with the o200k and cl100k tokenizers. Print, JSON and RPC runs do not get the section, since nothing there draws pills.
 
 To keep the drawing and write your own rules, set `PI_EMPHASIS_GUIDANCE=0`.
 
 ## Pills
 
 Write `[[Word]]` beside the thing it describes. The word decides the color and the icon.
+
+The prompt teaches 16 core pills, grouping related states under fewer terms: Passed, Fixed and Live become Done; Decision becomes Needs you; Partial, Skipped and In progress become Pending; Irreversible becomes Destructive. All words below remain accepted by the renderer with their existing colors and icons.
 
 ![Every pill word, grouped by color](screenshots/vocabulary.png)
 
